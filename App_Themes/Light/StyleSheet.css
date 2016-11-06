@@ -1,0 +1,45 @@
+﻿body { 
+    font-family:Verdana;
+    
+}
+#banner {
+    height: 329.407px;
+    background-size: 1349px 329.407px;
+    background-image: url('../../img/banner2.jpg');
+}
+
+#footer{
+    width: 1333px;
+    font-size:small;
+    padding-top:600px;
+    text-align: center;
+}
+#menu {
+    height: 50px;
+    color: white;
+    padding: 1px 50px 10px 50px;
+    background-color: darkgreen;
+}
+
+
+a:hover, a:visited, a:link, a:active{
+    text-decoration: none;
+    color: black;
+}
+
+
+.content{
+    clear: both;
+    padding: 20px;
+}
+th,td{
+    
+    text-align:right;
+}
+td{
+    padding-left:20px;
+    
+    height:15px;
+    vertical-align:top;
+
+}
