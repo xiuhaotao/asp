@@ -2,7 +2,6 @@
 
 <%@ Register Src="~/webUserControl.ascx" TagPrefix="uc1" TagName="webUserControl" %>
 
-
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="Server">
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="Server">
@@ -66,8 +65,10 @@
         </p>
         <uc1:webUserControl runat="server" ID="WebUserControl" />
         <br />
-        <asp:Button Font-Bold="True" ID="addRecipeBtn" Text="Add Recipe" OnClick="addBtnClick" runat="server" ValidationGroup="recipeGroup" />
-        <asp:Button Font-Bold="True" ID="cancelBtn" runat="server" Text="Cancel" OnClick="cancelBtnClick" />
+        <asp:Label ID="exception" runat="server" Text=""></asp:Label>
+        <asp:Button Font-Bold="True" ID="addRecipeBtn" Text="Save Recipe" OnClick="addBtnClick" runat="server" ValidationGroup="recipeGroup" />
+    <asp:Button Font-Bold="True" ID="cancelBtn" runat="server" Text="Cancel" OnClick="cancelBtnClick" />
+    <asp:Label ID ="test" runat="server" Text=""></asp:Label>
     </div>
 
 </asp:Content>
