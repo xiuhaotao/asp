@@ -25,7 +25,7 @@ public partial class recipes : ThemeClass
         OracleConnection conn = new OracleConnection();
         conn.ConnectionString = connectionString;
         OracleCommand comm = conn.CreateCommand();
-       // comm.CommandText = "select recipeid, recipename, userid,categoryid  from recipes";
+      
         
        comm.CommandText = "select c.type, r.recipeid,r.recipename,r.categoryid, u.name from categories c join  recipes r on c.categoryid = r.categoryid join users u on  r.userid = u.userid";
         comm.CommandType = CommandType.Text;
@@ -63,7 +63,7 @@ public partial class recipes : ThemeClass
     {
         int selectedIndex = GridViewRecipe.SelectedIndex;
         GridViewRow row = GridViewRecipe.Rows[selectedIndex];
-        string key = row.Cells[2].Text;
+        string key = row.Cells[3].Text;
         Response.Redirect("RecipeDetails.aspx?Key=" + key);
     }
 }

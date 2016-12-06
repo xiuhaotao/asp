@@ -9,6 +9,7 @@
             <AlternatingRowStyle BackColor="White" />
             <Columns>
                 <asp:CommandField HeaderText="Detail" ShowHeader="True" ShowSelectButton="True" />
+                <asp:CommandField HeaderText="Update" ShowEditButton="True"  ShowHeader="True" />
             </Columns>
             <EditRowStyle BackColor="#7C6F57" />
             <FooterStyle BackColor="#1C5E55" Font-Bold="True" ForeColor="White" />
