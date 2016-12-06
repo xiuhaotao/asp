@@ -77,7 +77,9 @@
                             <asp:Parameter Name="original_TYPE" Type="String" />
                         </UpdateParameters>
                     </asp:SqlDataSource>
-                    <asp:TextBox ID="editCate" runat="server" Text='<%# Bind("category") %>'></asp:TextBox>
+                    <asp:TextBox ID="newCate" runat="server"></asp:TextBox>
+                    <asp:Button ID="addCate" runat="server" Text="Add New Category" OnClick="btnAddCate_Click" />
+                   
                 </EditItemTemplate>
                 <InsertItemTemplate>
                     <asp:TextBox ID="insertcate" runat="server" Text='<%# Bind("category") %>'></asp:TextBox>
