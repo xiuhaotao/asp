@@ -59,12 +59,24 @@ public partial class RecipeDetails : ThemeClass
         table2 = new DataTable();
         try
         {
-            comm.CommandText = "select i.name, i.quantity, i.unitOfMeasure from recipes r right outer join recipesLinkIngredients on r.recipeid = recipesLinkIngredients.recipeid right outer join ingredients i on recipesLinkIngredients.ingredientID = i.ingredientID where r.recipeid=" + Request.QueryString["key"];
-
+            comm.CommandText = "select i.name, i.quantity, i.unitOfMeasure, r.categoryid, c.type from recipes r left join categories c on c.categoryid = r.categoryid right outer join recipesLinkIngredients on r.recipeid = recipesLinkIngredients.recipeid right outer join ingredients i on recipesLinkIngredients.ingredientID = i.ingredientID where r.recipeid=" + Request.QueryString["key"];
             comm.CommandType = CommandType.Text;
-
             reader = comm.ExecuteReader();
             table2.Load(reader);
+            Label category = (Label)DetailsViewDetail.FindControl("Label5");
+            if (category != null)
+            {
+                category.Text = table2.Rows[0]["type"].ToString();
+            }
+            DropDownList newSeleCat = (DropDownList)DetailsViewDetail.FindControl("categoryList");
+            if (newSeleCat != null)
+            {
+                ListItem selectedListItem = newSeleCat.Items.FindByValue(table2.Rows[0]["categoryid"].ToString());
+                if (selectedListItem != null)
+                {
+                    selectedListItem.Selected = true;
+                }
+            }
         }
 
         catch (SqlException ex)
@@ -82,46 +94,61 @@ public partial class RecipeDetails : ThemeClass
         }
         ingredientView.DataSource = table2;
         ingredientView.DataBind();
-
+        
     }
 
     protected void btnAddCate_Click(object sender, EventArgs e)
     {
-        string connectionString =
-        ConfigurationManager.ConnectionStrings["ConnectionString2"].ConnectionString;
-        OracleConnection conn = new OracleConnection();
-        conn.ConnectionString = connectionString;
-        OracleCommand comm = conn.CreateCommand();
+        DropDownList newSeleCat = (DropDownList)DetailsViewDetail.FindControl("categoryList");
+        String value = newSeleCat.SelectedValue;
         TextBox newCate = (TextBox)DetailsViewDetail.FindControl("newCate");
-        comm.CommandText = "insert into categories (categoryid, type, typedesc) values (category_id_seq.nextval, '" + newCate.Text + "', '" + newCate.Text + "')";
-        comm.CommandType = CommandType.Text;
+        if (newCate.Text.Length > 0)
+        {
+            string connectionString =
+            ConfigurationManager.ConnectionStrings["ConnectionString2"].ConnectionString;
+            OracleConnection conn = new OracleConnection();
+            conn.ConnectionString = connectionString;
+            OracleCommand comm = conn.CreateCommand();
+
+            comm.CommandText = "insert into categories (categoryid, type, typedesc) values (category_id_seq.nextval, '" + newCate.Text + "', '" + newCate.Text + "')";
+            comm.CommandType = CommandType.Text;
 
 
-        DataTable table;
-        table = new DataTable();
-        try
-        {
-            comm.Connection.Open();
-            OracleDataReader reader = comm.ExecuteReader();
+            DataTable table;
+            table = new DataTable();
+            try
+            {
+                comm.Connection.Open();
+                OracleDataReader reader = comm.ExecuteReader();
 
-            table.Load(reader);
-        }
-        catch (SqlException ex)
-        {
-            exception.Text = ex.Message;
-        }
-        catch (Exception ex)
-        {
+                table.Load(reader);
+            }
+            catch (SqlException ex)
+            {
+                exception.Text = ex.Message;
+            }
+            catch (Exception ex)
+            {
 
-            exception.Text = ex.Message;
+                exception.Text = ex.Message;
+            }
+            finally
+            {
+                comm.Connection.Close();
+            }
+            DropDownList categoryDropList = (DropDownList)DetailsViewDetail.FindControl("categoryList");
+            categoryDropList.DataBind();
+            newCate.Text = "";
+            
+            if (newSeleCat != null)
+            {
+                ListItem selectedListItem = newSeleCat.Items.FindByValue(value);
+                if (selectedListItem != null)
+                {
+                    selectedListItem.Selected = true;
+                }
+            }
         }
-        finally
-        {
-            comm.Connection.Close();
-        }
-        DropDownList categoryDropList = (DropDownList)DetailsViewDetail.FindControl("categoryList");
-        categoryDropList.DataBind();
-        newCate.Text = "";
     }
 
     protected void btnDelete_Click(object sender, EventArgs e)
@@ -180,14 +207,14 @@ public partial class RecipeDetails : ThemeClass
         TextBox newDesc = (TextBox)DetailsViewDetail.FindControl("editDesc");
         TextBox newNum = (TextBox)DetailsViewDetail.FindControl("editNum");
         TextBox neweditMinute = (TextBox)DetailsViewDetail.FindControl("editMinute");
-        TextBox newEditCate = (TextBox)DetailsViewDetail.FindControl("editCate");
+        
         DropDownList newSeleCat = (DropDownList)DetailsViewDetail.FindControl("categoryList");
 
         string newReName = newRecipeName.Text;
         string newDes = newDesc.Text;
         int servingNum = int.Parse(newNum.Text);
         int minute = int.Parse(neweditMinute.Text);
-        string categ = newEditCate.Text;
+        string categ = newSeleCat.SelectedValue;
 
         string connectionString =
              ConfigurationManager.ConnectionStrings["ConnectionString2"].ConnectionString;
@@ -200,10 +227,7 @@ public partial class RecipeDetails : ThemeClass
             comm.CommandType = CommandType.Text;
 
             comm.CommandType = CommandType.Text;
-            comm.CommandText = "update recipes set recipename = ' " + newReName + "' , description = '" + newDes + "', servingnum = " + servingNum + ", cookingminutes = " + minute + " where recipeid = " + Request.QueryString["key"];
-            comm.ExecuteNonQuery();
-            comm.Parameters.Clear();
-            comm.CommandText = "update categories set type = ' " + categ + "'where categories.categoryid = (select  categoryid from recipes where recipes.recipeid = " + Request.QueryString["key"] + ")";
+            comm.CommandText = "update recipes set recipename='" + newReName + "' , description='" + newDes + "', servingnum=" + servingNum + ", cookingminutes=" + minute + ", categoryid='" + categ + "' where recipeid = " + Request.QueryString["key"];
             comm.ExecuteNonQuery();
         }
 
