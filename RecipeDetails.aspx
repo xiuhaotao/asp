@@ -91,6 +91,30 @@
                 </ItemTemplate>
             </asp:TemplateField>
 
+            <asp:TemplateField HeaderText="Ingredients">
+                <EditItemTemplate>
+                    <asp:TextBox ID="TextBox1" runat="server"></asp:TextBox>
+                </EditItemTemplate>
+                <InsertItemTemplate>
+                    <asp:TextBox ID="TextBox5" runat="server"></asp:TextBox>
+                </InsertItemTemplate>
+                <ItemTemplate>
+                    <asp:Label ID="Label6" runat="server"></asp:Label>
+                    <asp:GridView ID="IngredientsGridView" runat="server" AutoGenerateColumns="False" >
+                        <Columns>
+                            <asp:TemplateField>
+                                <EditItemTemplate>
+                                    <asp:TextBox ID="TextBox1" runat="server"></asp:TextBox>
+                                </EditItemTemplate>
+                                <ItemTemplate>
+                                    <asp:Label ID="Label1" runat="server"></asp:Label>
+                                </ItemTemplate>
+                            </asp:TemplateField>
+                        </Columns>
+                    </asp:GridView>
+                </ItemTemplate>
+            </asp:TemplateField>
+
             <asp:CommandField ShowEditButton="True" /> 
         </Fields>
         <FooterStyle BackColor="#B5C7DE" ForeColor="#4A3C8C" />
@@ -111,8 +135,51 @@
     <h4> Ingredients</h4>
     <asp:LinkButton ID="insertIngre" runat="server" OnClick="insertIngre_Click">Add New Ingredients</asp:LinkButton>
     <br />
-    <asp:gridview ID="ingredientView" runat="server" BackColor="LightGoldenrodYellow" BorderColor="Tan" BorderWidth="1px" CellPadding="2" ForeColor="Black" GridLines="None">
+    <asp:gridview ID="ingredientView" runat="server" BackColor="LightGoldenrodYellow" BorderColor="Tan" BorderWidth="1px" CellPadding="2" ForeColor="Black" GridLines="None" OnSelectedIndexChanged="ingredientView_SelectedIndexChanged" AutoGenerateColumns="False" OnRowCancelingEdit="ingredientView_RowCancelingEdit" OnRowEditing="ingredientView_RowEditing" OnRowUpdating="ingredientView_RowUpdating">
         <AlternatingRowStyle BackColor="PaleGoldenrod" />
+        <Columns>
+            <asp:TemplateField HeaderText="Update">
+                <EditItemTemplate>
+                    <asp:LinkButton ID="updateIngereLinkButton" runat="server" CausesValidation="True" CommandName="Update" Text="Update"></asp:LinkButton>
+                    &nbsp;<asp:LinkButton ID="LinkButton2" runat="server" CausesValidation="False" CommandName="Cancel" Text="Cancel"></asp:LinkButton>
+                </EditItemTemplate>
+                <ItemTemplate>
+                    <asp:LinkButton ID="LinkButton1" runat="server" CausesValidation="False" CommandName="Edit" Text="Edit"></asp:LinkButton>
+                </ItemTemplate>
+            </asp:TemplateField>
+            <asp:TemplateField HeaderText="IngerId">
+                <EditItemTemplate>
+                    <asp:TextBox ID="ingerIdd" runat="server" Text='<%# Bind("ingredientid") %>'></asp:TextBox>
+                </EditItemTemplate>
+                <ItemTemplate>
+                    <asp:Label ID="Label4" runat="server" Text='<%# Bind("ingredientid") %>'></asp:Label>
+                </ItemTemplate>
+            </asp:TemplateField>
+            <asp:TemplateField HeaderText="IngertientName">
+                <EditItemTemplate>
+                    <asp:TextBox ID="name" runat="server" Text='<%# Bind("name") %>'></asp:TextBox>
+                </EditItemTemplate>
+                <ItemTemplate>
+                    <asp:Label ID="Label1" runat="server" Text='<%# Bind("name") %>'></asp:Label>
+                </ItemTemplate>
+            </asp:TemplateField>
+            <asp:TemplateField HeaderText="Quantity">
+                <EditItemTemplate>
+                    <asp:TextBox ID="quantity" runat="server" Text='<%# Bind("quantity") %>'></asp:TextBox>
+                </EditItemTemplate>
+                <ItemTemplate>
+                    <asp:Label ID="Label2" runat="server" Text='<%# Bind("quantity") %>'></asp:Label>
+                </ItemTemplate>
+            </asp:TemplateField>
+            <asp:TemplateField HeaderText="measurement">
+                <EditItemTemplate>
+                    <asp:TextBox ID="unitOfMeasure" runat="server" Text='<%# Bind("unitOfMeasure") %>'></asp:TextBox>
+                </EditItemTemplate>
+                <ItemTemplate>
+                    <asp:Label ID="Label3" runat="server" Text='<%# Bind("unitOfMeasure") %>'></asp:Label>
+                </ItemTemplate>
+            </asp:TemplateField>
+        </Columns>
         <FooterStyle BackColor="Tan" />
         <HeaderStyle BackColor="Tan" Font-Bold="True" />
         <PagerStyle BackColor="PaleGoldenrod" ForeColor="DarkSlateBlue" HorizontalAlign="Center" />

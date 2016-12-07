@@ -18,9 +18,49 @@ public partial class RecipeDetails : ThemeClass
         if (!IsPostBack)
         {
             BindList();
+    //        BintIngredientList();
         }
 
     }
+  /*  private void BintIngredientList()
+    {
+        string connectionString =
+        ConfigurationManager.ConnectionStrings["ConnectionString2"].ConnectionString;
+        OracleConnection conn = new OracleConnection();
+        conn.ConnectionString = connectionString;
+        OracleCommand comm = conn.CreateCommand();
+        OracleDataReader reader;
+        DataTable table;
+        table = new DataTable();
+        try
+        {
+            comm.CommandText = "select * from ingredients join recipesLinkIngredients on ingredients.INGREDIENTID = recipesLinkIngredients.INGREDIENTID where recipesLinkIngredients .recipeid == " + Request.QueryString["key"];
+
+            comm.CommandType = CommandType.Text;
+
+            comm.Connection.Open();
+            reader = comm.ExecuteReader();
+            table.Load(reader);
+        }
+        catch (SqlException ex)
+        {
+            exception.Text = ex.Message;
+        }
+        catch (Exception ex)
+        {
+
+            exception.Text = ex.Message;
+        }
+
+        
+        finally
+        {
+            comm.Connection.Close();
+        }
+        GridView ingerList = (GridView)DetailsViewDetail.FindControl("IngredientsGridView");
+        ingerList.DataSource = table;
+        ingerList.DataBind();
+    }*/
 
     private void BindList()
     {
@@ -88,13 +128,41 @@ public partial class RecipeDetails : ThemeClass
 
             exception.Text = ex.Message;
         }
+       
+     //   ingredientView.DataSource = table2;
+       // ingredientView.DataBind();
+
+
+
+
+
+
+        DataTable table3;
+        table3 = new DataTable();
+        try
+        {
+            comm.CommandText = "select ingredients.ingredientid,ingredients.name,ingredients.quantity,ingredients.unitofmeasure from ingredients join recipesLinkIngredients on ingredients.INGREDIENTID = recipesLinkIngredients.INGREDIENTID where recipesLinkIngredients .recipeid = " + Request.QueryString["key"];
+            comm.CommandType = CommandType.Text;
+            reader = comm.ExecuteReader();
+            table3.Load(reader);
+        }
+
+        catch (SqlException ex)
+        {
+            exception.Text = ex.Message;
+        }
+        catch (Exception ex)
+        {
+
+            exception.Text = ex.Message;
+        }
         finally
         {
             comm.Connection.Close();
         }
-        ingredientView.DataSource = table2;
+        ingredientView.DataSource = table3;
         ingredientView.DataBind();
-        
+
     }
 
     protected void btnAddCate_Click(object sender, EventArgs e)
@@ -246,5 +314,65 @@ public partial class RecipeDetails : ThemeClass
     protected void insertIngre_Click(object sender, EventArgs e)
     {
 
+    }
+
+    protected void ingredientView_SelectedIndexChanged(object sender, EventArgs e)
+    {
+
+       
+    }
+
+    protected void ingredientView_RowEditing(object sender, GridViewEditEventArgs e)
+    {
+        ingredientView.EditIndex = e.NewEditIndex;
+
+        BindList();
+    }
+
+    protected void ingredientView_RowUpdating(object sender, GridViewUpdateEventArgs e)
+    {
+       
+      GridViewRow row = ingredientView.Rows[e.RowIndex];
+      TextBox Id = (TextBox)row.FindControl("ingerIdd");
+        
+        TextBox updateName = (TextBox)row.FindControl("name");
+        TextBox updateQuan = (TextBox)row.FindControl("quantity");
+        TextBox UpdateUnit = (TextBox)row.FindControl("unitOfMeasure");
+        int ingerID = int.Parse(Id.Text);
+        string name = updateName.Text;
+        int quan = int.Parse(updateQuan.Text);
+        string measure = UpdateUnit.Text;
+
+        string connectionString =
+             ConfigurationManager.ConnectionStrings["ConnectionString2"].ConnectionString;
+        OracleConnection conn = new OracleConnection();
+        conn.ConnectionString = connectionString;
+        OracleCommand comm = conn.CreateCommand();
+        try
+        {
+            comm.Connection.Open();
+            comm.CommandType = CommandType.Text;
+
+            comm.CommandType = CommandType.Text;
+            comm.CommandText = "update ingredients set name ='" + name + "' , quantity=" + quan + ", unitofmeasure= '" + measure + "' where ingredientid = " + ingerID;
+            comm.ExecuteNonQuery();
+        }
+
+        catch (SqlException ex)
+        {
+            exception.Text = ex.Message;
+        }
+
+        finally
+        {
+            comm.Connection.Close();
+        }
+        BindList();
+    }
+
+    protected void ingredientView_RowCancelingEdit(object sender, GridViewCancelEditEventArgs e)
+    {
+        ingredientView.EditIndex = -1;
+        BindList();
     }
 }
