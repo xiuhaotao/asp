@@ -170,26 +170,25 @@ public partial class RecipeDetails : ThemeClass
         DropDownList newSeleCat = (DropDownList)DetailsViewDetail.FindControl("categoryList");
         String value = newSeleCat.SelectedValue;
         TextBox newCate = (TextBox)DetailsViewDetail.FindControl("newCate");
-        if (newCate.Text.Length > 0)
+        if (newCate.Text.Length > 0 && null == newSeleCat.Items.FindByText(newCate.Text))
         {
             string connectionString =
             ConfigurationManager.ConnectionStrings["ConnectionString2"].ConnectionString;
             OracleConnection conn = new OracleConnection();
             conn.ConnectionString = connectionString;
             OracleCommand comm = conn.CreateCommand();
-
             comm.CommandText = "insert into categories (categoryid, type, typedesc) values (category_id_seq.nextval, '" + newCate.Text + "', '" + newCate.Text + "')";
             comm.CommandType = CommandType.Text;
-
-
+            
             DataTable table;
             table = new DataTable();
             try
             {
                 comm.Connection.Open();
                 OracleDataReader reader = comm.ExecuteReader();
-
                 table.Load(reader);
+                newSeleCat.DataBind();
+                newSeleCat.Items.FindByText(newCate.Text).Selected = true;
             }
             catch (SqlException ex)
             {
@@ -202,20 +201,12 @@ public partial class RecipeDetails : ThemeClass
             }
             finally
             {
+                newCate.Text = "";
                 comm.Connection.Close();
-            }
-            DropDownList categoryDropList = (DropDownList)DetailsViewDetail.FindControl("categoryList");
-            categoryDropList.DataBind();
+            }            
+        } else
+        {
             newCate.Text = "";
-            
-            if (newSeleCat != null)
-            {
-                ListItem selectedListItem = newSeleCat.Items.FindByValue(value);
-                if (selectedListItem != null)
-                {
-                    selectedListItem.Selected = true;
-                }
-            }
         }
     }
 
@@ -333,7 +324,7 @@ public partial class RecipeDetails : ThemeClass
     {
        
       GridViewRow row = ingredientView.Rows[e.RowIndex];
-      TextBox Id = (TextBox)row.FindControl("ingerIdd");
+      Label Id = (Label)row.FindControl("ingerIdd");
         
         TextBox updateName = (TextBox)row.FindControl("name");
         TextBox updateQuan = (TextBox)row.FindControl("quantity");
@@ -356,6 +347,7 @@ public partial class RecipeDetails : ThemeClass
             comm.CommandType = CommandType.Text;
             comm.CommandText = "update ingredients set name ='" + name + "' , quantity=" + quan + ", unitofmeasure= '" + measure + "' where ingredientid = " + ingerID;
             comm.ExecuteNonQuery();
+            ingredientView.EditIndex = -1;
         }
 
         catch (SqlException ex)
@@ -374,5 +366,49 @@ public partial class RecipeDetails : ThemeClass
     {
         ingredientView.EditIndex = -1;
         BindList();
+    }
+
+    protected void Button1_Click(object sender, EventArgs e)
+    {
+        DataTable table3;
+        table3 = new DataTable();
+        string connectionString =
+             ConfigurationManager.ConnectionStrings["ConnectionString2"].ConnectionString;
+        OracleConnection conn = new OracleConnection();
+        conn.ConnectionString = connectionString;
+        OracleDataReader reader;
+        OracleCommand comm = conn.CreateCommand();
+        try
+        {
+            comm.Connection.Open();
+            comm.CommandType = CommandType.Text;
+
+            comm.CommandType = CommandType.Text;
+            comm.CommandText = "insert into ingredients (ingredientid, name, quantity, unitofmeasure) values(ingredients_id_seq.nextval, '" + newIngedientName.Text + "', " + int.Parse(newQuantity.Text) + ", '" + newUnit.Text + "')";
+            comm.ExecuteNonQuery();
+            comm.Parameters.Clear();
+            comm.CommandText = "insert into recipeslinkingredients(recipeid, ingredientid) values(" + int.Parse(Request.QueryString["key"]) + ", ingredients_id_seq.currval)";
+            comm.ExecuteNonQuery();
+            comm.Parameters.Clear();
+            comm.CommandText = "select ingredients.ingredientid,ingredients.name,ingredients.quantity,ingredients.unitofmeasure from ingredients join recipesLinkIngredients on ingredients.INGREDIENTID = recipesLinkIngredients.INGREDIENTID where recipesLinkIngredients .recipeid = " + Request.QueryString["key"];
+            comm.CommandType = CommandType.Text;
+            reader = comm.ExecuteReader();
+            table3.Load(reader);
+            ingredientView.DataSource = table3;
+            ingredientView.DataBind();
+            newIngedientName.Text = "";
+            newQuantity.Text = "";
+            newUnit.Text = ""; 
+        }
+
+        catch (SqlException ex)
+        {
+            exception.Text = ex.Message;
+        }
+
+        finally
+        {
+            comm.Connection.Close();
+        }
     }
 }

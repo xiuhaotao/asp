@@ -34,7 +34,7 @@
             </asp:TemplateField>
             <asp:TemplateField HeaderText="Serving Num">
                 <EditItemTemplate>
-                    <asp:TextBox ID="editNum" runat="server" Text='<%# Bind("servingnum") %>'></asp:TextBox>
+                    <asp:TextBox TextMode="Number" min="1" max="99" step="1" ID="editNum" runat="server" Text='<%# Bind("servingnum") %>'></asp:TextBox>
                 </EditItemTemplate>
                 <InsertItemTemplate>
                     <asp:TextBox ID="TextBox3" runat="server" Text='<%# Bind("servingnum") %>'></asp:TextBox>
@@ -45,7 +45,7 @@
             </asp:TemplateField>
             <asp:TemplateField HeaderText="Minutes">
                 <EditItemTemplate>
-                    <asp:TextBox ID="editMinute" runat="server" Text='<%# Bind("cookingminutes") %>'></asp:TextBox>
+                    <asp:TextBox  TextMode="Number" min="1" max="999" step="1" ID="editMinute" runat="server" Text='<%# Bind("cookingminutes") %>'></asp:TextBox>
                 </EditItemTemplate>
                 <InsertItemTemplate>
                     <asp:TextBox ID="TextBox4" runat="server" Text='<%# Bind("cookingminutes") %>'></asp:TextBox>
@@ -79,7 +79,7 @@
                     </asp:SqlDataSource>
                     <div>
                     <asp:TextBox ID="newCate" runat="server" Width="55px"></asp:TextBox>
-                    <asp:Button ID="addCate" runat="server" Width="55px" Text="Add New Category" OnClick="btnAddCate_Click" />
+                    <asp:Button ID="addCate" runat="server" Text="Add New Category" OnClick="btnAddCate_Click" />
                     </div>
                    
                 </EditItemTemplate>
@@ -88,30 +88,6 @@
                 </InsertItemTemplate>
                 <ItemTemplate>
                     <asp:Label ID="Label5" runat="server" Text=""></asp:Label>
-                </ItemTemplate>
-            </asp:TemplateField>
-
-            <asp:TemplateField HeaderText="Ingredients">
-                <EditItemTemplate>
-                    <asp:TextBox ID="TextBox1" runat="server"></asp:TextBox>
-                </EditItemTemplate>
-                <InsertItemTemplate>
-                    <asp:TextBox ID="TextBox5" runat="server"></asp:TextBox>
-                </InsertItemTemplate>
-                <ItemTemplate>
-                    <asp:Label ID="Label6" runat="server"></asp:Label>
-                    <asp:GridView ID="IngredientsGridView" runat="server" AutoGenerateColumns="False" >
-                        <Columns>
-                            <asp:TemplateField>
-                                <EditItemTemplate>
-                                    <asp:TextBox ID="TextBox1" runat="server"></asp:TextBox>
-                                </EditItemTemplate>
-                                <ItemTemplate>
-                                    <asp:Label ID="Label1" runat="server"></asp:Label>
-                                </ItemTemplate>
-                            </asp:TemplateField>
-                        </Columns>
-                    </asp:GridView>
                 </ItemTemplate>
             </asp:TemplateField>
 
@@ -133,8 +109,6 @@
     <asp:Label ID="test" runat="server" Text=""></asp:Label>
     <br />
     <h4> Ingredients</h4>
-    <asp:LinkButton ID="insertIngre" runat="server" OnClick="insertIngre_Click">Add New Ingredients</asp:LinkButton>
-    <br />
     <asp:gridview ID="ingredientView" runat="server" BackColor="LightGoldenrodYellow" BorderColor="Tan" BorderWidth="1px" CellPadding="2" ForeColor="Black" GridLines="None" OnSelectedIndexChanged="ingredientView_SelectedIndexChanged" AutoGenerateColumns="False" OnRowCancelingEdit="ingredientView_RowCancelingEdit" OnRowEditing="ingredientView_RowEditing" OnRowUpdating="ingredientView_RowUpdating">
         <AlternatingRowStyle BackColor="PaleGoldenrod" />
         <Columns>
@@ -149,7 +123,7 @@
             </asp:TemplateField>
             <asp:TemplateField HeaderText="IngerId">
                 <EditItemTemplate>
-                    <asp:TextBox ID="ingerIdd" runat="server" Text='<%# Bind("ingredientid") %>'></asp:TextBox>
+                    <asp:Label ID="ingerIdd" runat="server" Text='<%# Bind("ingredientid") %>'></asp:Label>
                 </EditItemTemplate>
                 <ItemTemplate>
                     <asp:Label ID="Label4" runat="server" Text='<%# Bind("ingredientid") %>'></asp:Label>
@@ -189,5 +163,12 @@
         <SortedDescendingCellStyle BackColor="#E1DB9C" />
         <SortedDescendingHeaderStyle BackColor="#C2A47B" />
     </asp:gridview>
+     <asp:Label ID="Label6" runat="server" Text="Name: "></asp:Label>
+     <asp:TextBox ID="newIngedientName" runat="server"></asp:TextBox>
+     <asp:Label ID="Label7" runat="server" Text="Quantity: "></asp:Label>
+     <asp:TextBox ID="newQuantity" runat="server" TextMode="Number" min="1" max="99" step="1"></asp:TextBox>
+     <asp:Label ID="Label8" runat="server" Text="Measurement: "></asp:Label>
+     <asp:TextBox ID="newUnit" runat="server" Width="50px"></asp:TextBox>
+     <asp:Button ID="Button1" runat="server" Text="Add" OnClick="Button1_Click" />
 </asp:Content>
 
