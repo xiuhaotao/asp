@@ -58,7 +58,7 @@
             <asp:TemplateField HeaderText="Category">
                 <EditItemTemplate>
                    
-                    <asp:DropDownList ID="categoryList" runat="server"  DataTextField="TYPE" DataValueField="CATEGORYID" OnDataBound="categoryList_DataBound">
+                    <asp:DropDownList ID="categoryList" runat="server"  DataTextField="TYPE" DataValueField="CATEGORYID">
                     </asp:DropDownList>
                     <div>
                     <asp:TextBox ID="newCate" runat="server" Width="55px"></asp:TextBox>
