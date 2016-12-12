@@ -14,12 +14,10 @@ validationgroup="ingredientGroup" ErrorMessage="number of unit (0-999)" ForeColo
 validationgroup="ingredientGroup" ErrorMessage="Number of unit is required <br / >" ForeColor="#CC3300"></asp:RangeValidator>
 <asp:RequiredFieldValidator ID="RequiredFieldValidator2" runat="server" ControlToValidate="unitText"
 validationgroup="ingredientGroup" ErrorMessage="name of unit is required" ForeColor="#CC3300"></asp:RequiredFieldValidator>
-<asp:ListView ID="ListView1" runat="server" DataSourceID="ingredientDS">
+<asp:ListView ID="ListView1" runat="server" DataSourceID="ObjectDataSource1">
     <AlternatingItemTemplate>
         <tr style="background-color: #FAFAD2;color: #284775;">
-            <td>
-                <asp:Button ID="EditButton" runat="server" CommandName="Edit" Text="Edit" />
-            </td>
+           
             <td>
                 <asp:Label ID="NameLabel" runat="server" Text='<%# Eval("Name") %>' />
             </td>
@@ -57,6 +55,7 @@ validationgroup="ingredientGroup" ErrorMessage="name of unit is required" ForeCo
     </EmptyDataTemplate>
     <InsertItemTemplate>
         <tr style="">
+            
             <td>
                 <asp:Button ID="InsertButton" runat="server" CommandName="Insert" Text="Insert" />
                 <asp:Button ID="CancelButton" runat="server" CommandName="Cancel" Text="Clear" />
@@ -74,9 +73,7 @@ validationgroup="ingredientGroup" ErrorMessage="name of unit is required" ForeCo
     </InsertItemTemplate>
     <ItemTemplate>
         <tr style="background-color: #FFFBD6;color: #333333;">
-            <td>
-                <asp:Button ID="EditButton" runat="server" CommandName="Edit" Text="Edit" />
-            </td>
+           
             <td>
                 <asp:Label ID="NameLabel" runat="server" Text='<%# Eval("Name") %>' />
             </td>
@@ -94,7 +91,7 @@ validationgroup="ingredientGroup" ErrorMessage="name of unit is required" ForeCo
                 <td runat="server">
                     <table id="itemPlaceholderContainer" runat="server" border="1" style="background-color: #FFFFFF;border-collapse: collapse;border-color: #999999;border-style:none;border-width:1px;font-family: Verdana, Arial, Helvetica, sans-serif;">
                         <tr runat="server" style="background-color: #FFFBD6;color: #333333;">
-                            <th runat="server"></th>
+                            
                             <th runat="server">Name</th>
                             <th runat="server">Quantity</th>
                             <th runat="server">Unit</th>
@@ -111,9 +108,7 @@ validationgroup="ingredientGroup" ErrorMessage="name of unit is required" ForeCo
     </LayoutTemplate>
     <SelectedItemTemplate>
         <tr style="background-color: #FFCC66;font-weight: bold;color: #000080;">
-            <td>
-                <asp:Button ID="EditButton" runat="server" CommandName="Edit" Text="Edit" />
-            </td>
+            
             <td>
                 <asp:Label ID="NameLabel" runat="server" Text='<%# Eval("Name") %>' />
             </td>
@@ -127,7 +122,8 @@ validationgroup="ingredientGroup" ErrorMessage="name of unit is required" ForeCo
     </SelectedItemTemplate>
 </asp:ListView>
 
+<asp:ObjectDataSource ID="ObjectDataSource1" runat="server" SelectMethod="Get" TypeName="IngredientRepo"></asp:ObjectDataSource>
 
-<asp:ObjectDataSource ID="ingredientDS" runat="server" 
-    DataObjectTypeName="Ingredient" TypeName="IngredientRepo" SelectMethod="Get" UpdateMethod="Update">
-</asp:ObjectDataSource>
+
+
+

@@ -3,7 +3,7 @@
 <asp:Content ID="Content1" ContentPlaceHolderID="head" Runat="Server">
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" Runat="Server">
-     <asp:DetailsView ID="DetailsViewDetail" runat="server" Height="50px" Width="180px" BackColor="White" BorderColor="#E7E7FF" BorderStyle="Dashed" BorderWidth="1px" CellPadding="3" CellSpacing="2" GridLines="Horizontal" AutoGenerateRows="False" OnModeChanging="DetailsViewDetail_ModeChanging" OnItemUpdating="DetailsViewDetail_ItemUpdating" >
+     <asp:DetailsView ID="DetailsViewDetail" runat="server" Height="50px" Width="640px" BackColor="White" BorderColor="#E7E7FF" BorderStyle="Dashed" BorderWidth="1px" CellPadding="3" CellSpacing="2" GridLines="Horizontal" AutoGenerateRows="False" OnModeChanging="DetailsViewDetail_ModeChanging" OnItemUpdating="DetailsViewDetail_ItemUpdating" OnModeChanged="DetailsViewDetail_ModeChanged" >
         <CommandRowStyle Font-Size="Medium" HorizontalAlign="Left" />
         <EditRowStyle BackColor="#738A9C" Font-Bold="True" ForeColor="#F7F7F7" />
         <FieldHeaderStyle Font-Names="Arial" Font-Size="Small" />
@@ -21,7 +21,7 @@
                     <asp:Label ID="Label1" runat="server" Text='<%# Bind("recipename") %>'></asp:Label>
                 </ItemTemplate>
             </asp:TemplateField>
-            <asp:TemplateField HeaderText="Desc">
+            <asp:TemplateField HeaderText="Description">
                 <EditItemTemplate>
                     <asp:TextBox ID="editDesc" runat="server" Text='<%# Bind("description") %>'></asp:TextBox>
                 </EditItemTemplate>
@@ -32,7 +32,7 @@
                     <asp:Label ID="Label2" runat="server" Text='<%# Bind("description") %>'></asp:Label>
                 </ItemTemplate>
             </asp:TemplateField>
-            <asp:TemplateField HeaderText="Serving Num">
+            <asp:TemplateField HeaderText="Serving Number">
                 <EditItemTemplate>
                     <asp:TextBox TextMode="Number" min="1" max="99" step="1" ID="editNum" runat="server" Text='<%# Bind("servingnum") %>'></asp:TextBox>
                 </EditItemTemplate>
@@ -43,7 +43,7 @@
                     <asp:Label ID="Label3" runat="server" Text='<%# Bind("servingnum") %>'></asp:Label>
                 </ItemTemplate>
             </asp:TemplateField>
-            <asp:TemplateField HeaderText="Minutes">
+            <asp:TemplateField HeaderText="Minutes to prepare">
                 <EditItemTemplate>
                     <asp:TextBox  TextMode="Number" min="1" max="999" step="1" ID="editMinute" runat="server" Text='<%# Bind("cookingminutes") %>'></asp:TextBox>
                 </EditItemTemplate>
@@ -58,25 +58,8 @@
             <asp:TemplateField HeaderText="Category">
                 <EditItemTemplate>
                    
-                    <asp:DropDownList ID="categoryList" runat="server" DataSourceID="catList" DataTextField="TYPE" DataValueField="CATEGORYID">
+                    <asp:DropDownList ID="categoryList" runat="server"  DataTextField="TYPE" DataValueField="CATEGORYID" OnDataBound="categoryList_DataBound">
                     </asp:DropDownList>
-                    <asp:SqlDataSource ID="catList" runat="server" ConflictDetection="CompareAllValues" ConnectionString="<%$ ConnectionStrings:ConnectionString2 %>" DeleteCommand="DELETE FROM &quot;CATEGORIES&quot; WHERE &quot;CATEGORYID&quot; = ? AND ((&quot;TYPE&quot; = ?) OR (&quot;TYPE&quot; IS NULL AND ? IS NULL))" InsertCommand="INSERT INTO &quot;CATEGORIES&quot; (&quot;CATEGORYID&quot;, &quot;TYPE&quot;) VALUES (?, ?)" OldValuesParameterFormatString="original_{0}" ProviderName="<%$ ConnectionStrings:ConnectionString2.ProviderName %>" SelectCommand="SELECT &quot;CATEGORYID&quot;, &quot;TYPE&quot; FROM &quot;CATEGORIES&quot;" UpdateCommand="UPDATE &quot;CATEGORIES&quot; SET &quot;TYPE&quot; = ? WHERE &quot;CATEGORYID&quot; = ? AND ((&quot;TYPE&quot; = ?) OR (&quot;TYPE&quot; IS NULL AND ? IS NULL))">
-                        <DeleteParameters>
-                            <asp:Parameter Name="original_CATEGORYID" Type="Decimal" />
-                            <asp:Parameter Name="original_TYPE" Type="String" />
-                            <asp:Parameter Name="original_TYPE" Type="String" />
-                        </DeleteParameters>
-                        <InsertParameters>
-                            <asp:Parameter Name="CATEGORYID" Type="Decimal" />
-                            <asp:Parameter Name="TYPE" Type="String" />
-                        </InsertParameters>
-                        <UpdateParameters>
-                            <asp:Parameter Name="TYPE" Type="String" />
-                            <asp:Parameter Name="original_CATEGORYID" Type="Decimal" />
-                            <asp:Parameter Name="original_TYPE" Type="String" />
-                            <asp:Parameter Name="original_TYPE" Type="String" />
-                        </UpdateParameters>
-                    </asp:SqlDataSource>
                     <div>
                     <asp:TextBox ID="newCate" runat="server" Width="55px"></asp:TextBox>
                     <asp:Button ID="addCate" runat="server" Text="Add New Category" OnClick="btnAddCate_Click" />
@@ -87,7 +70,7 @@
                     <asp:TextBox ID="insertcate" runat="server" Text='<%# Bind("category") %>'></asp:TextBox>
                 </InsertItemTemplate>
                 <ItemTemplate>
-                    <asp:Label ID="Label5" runat="server" Text=""></asp:Label>
+                    <asp:Label ID="catgoryLabel" runat="server" Text=""></asp:Label>
                 </ItemTemplate>
             </asp:TemplateField>
 
@@ -109,7 +92,7 @@
     <asp:Label ID="test" runat="server" Text=""></asp:Label>
     <br />
     <h4> Ingredients</h4>
-    <asp:gridview ID="ingredientView" runat="server" BackColor="LightGoldenrodYellow" BorderColor="Tan" BorderWidth="1px" CellPadding="2" ForeColor="Black" GridLines="None" OnSelectedIndexChanged="ingredientView_SelectedIndexChanged" AutoGenerateColumns="False" OnRowCancelingEdit="ingredientView_RowCancelingEdit" OnRowEditing="ingredientView_RowEditing" OnRowUpdating="ingredientView_RowUpdating">
+    <asp:gridview ID="ingredientView" runat="server" BackColor="LightGoldenrodYellow" BorderColor="Tan" BorderWidth="1px" CellPadding="2" ForeColor="Black" GridLines="None"  AutoGenerateColumns="False" OnRowCancelingEdit="ingredientView_RowCancelingEdit" OnRowEditing="ingredientView_RowEditing" OnRowUpdating="ingredientView_RowUpdating" Width="637px">
         <AlternatingRowStyle BackColor="PaleGoldenrod" />
         <Columns>
             <asp:TemplateField HeaderText="Update">
@@ -121,7 +104,7 @@
                     <asp:LinkButton ID="LinkButton1" runat="server" CausesValidation="False" CommandName="Edit" Text="Edit"></asp:LinkButton>
                 </ItemTemplate>
             </asp:TemplateField>
-            <asp:TemplateField HeaderText="IngerId">
+            <asp:TemplateField HeaderText="Ingerdient_ID">
                 <EditItemTemplate>
                     <asp:Label ID="ingerIdd" runat="server" Text='<%# Bind("ingredientid") %>'></asp:Label>
                 </EditItemTemplate>
@@ -163,12 +146,13 @@
         <SortedDescendingCellStyle BackColor="#E1DB9C" />
         <SortedDescendingHeaderStyle BackColor="#C2A47B" />
     </asp:gridview>
-     <asp:Label ID="Label6" runat="server" Text="Name: "></asp:Label>
+    <br /> 
+    <asp:Label ID="Label6" runat="server" Text="Name: "></asp:Label>
      <asp:TextBox ID="newIngedientName" runat="server"></asp:TextBox>
      <asp:Label ID="Label7" runat="server" Text="Quantity: "></asp:Label>
      <asp:TextBox ID="newQuantity" runat="server" TextMode="Number" min="1" max="99" step="1"></asp:TextBox>
      <asp:Label ID="Label8" runat="server" Text="Measurement: "></asp:Label>
      <asp:TextBox ID="newUnit" runat="server" Width="50px"></asp:TextBox>
-     <asp:Button ID="Button1" runat="server" Text="Add" OnClick="Button1_Click" />
+     <asp:Button ID="addButton" runat="server" Text="Add" OnClick="addButton_Click" />
 </asp:Content>
 

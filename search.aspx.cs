@@ -28,80 +28,55 @@ public partial class search : ThemeClass
             OracleConnection conn = new OracleConnection();
             conn.ConnectionString = connectionString;
             OracleCommand comm = conn.CreateCommand();
-            comm.CommandText = "select name, userid from users";
             comm.CommandType = CommandType.Text;
 
             try
             {
                 comm.Connection.Open();
+                comm.CommandText = "select name, userid from users";
+
                 OracleDataReader reader = comm.ExecuteReader();
                 while (reader.Read())
                 {
-                    ListItem item = new ListItem(Convert.ToString(reader["NAME"]), Convert.ToString(reader["USERID"]));
-                    userListModel.Add(item);
+                    ListItem itemUser = new ListItem(Convert.ToString(reader["NAME"]), Convert.ToString(reader["USERID"]));
+                
+                    userListModel.Add(itemUser);
                 }
-                reader.Close();
                 reader.Dispose();
+                comm.Parameters.Clear();
+                    comm.CommandText = "select type, categoryid from categories";
+                    comm.CommandType = CommandType.Text;
+
+                OracleDataReader reader2 = comm.ExecuteReader();
+                while (reader2.Read())
+                    {
+                        ListItem itemCategory = new ListItem(Convert.ToString(reader2["type"]), Convert.ToString(reader2["categoryid"]));
+                        categoryListModel.Add(itemCategory);
+                    }
+                    reader2.Dispose();
+                    comm.Parameters.Clear();
+
+                
+                comm.CommandType = CommandType.Text;
+
+                comm.CommandText = "select name, ingredientid from ingredients";
+                OracleDataReader reader3 = comm.ExecuteReader();
+                while (reader3.Read())
+                    {
+                        ListItem item = new ListItem(Convert.ToString(reader3["NAME"]), Convert.ToString(reader3["ingredientid"]));
+                        ingredientListModel.Add(item);
+                    }
+                    reader3.Dispose();                
             }
+
             catch (Exception)
             {
             }
+
             finally
             {
                 comm.Connection.Close();
                 comm.Connection.Dispose();
-            }
-
-            OracleConnection conn1 = new OracleConnection();
-            conn1.ConnectionString = connectionString;
-            OracleCommand comm1 = conn1.CreateCommand();
-            comm1.CommandText = "select type, categoryid from categories";
-            comm1.CommandType = CommandType.Text;
-            try
-            {
-                comm1.Connection.Open();
-                OracleDataReader reader = comm1.ExecuteReader();
-                while (reader.Read())
-                {
-                    ListItem item = new ListItem(Convert.ToString(reader["type"]), Convert.ToString(reader["categoryid"]));
-                    categoryListModel.Add(item);
-                }
-                reader.Close();
-                reader.Dispose();
-            }
-            catch (Exception)
-            {
-            }
-            finally
-            {
-                comm1.Connection.Close();
-                comm1.Connection.Dispose();
-            }
-
-            OracleConnection conn2 = new OracleConnection();
-            conn2.ConnectionString = connectionString;
-            OracleCommand comm2 = conn2.CreateCommand();
-            comm2.CommandText = "select name, ingredientid from ingredients";
-            comm2.CommandType = CommandType.Text;
-            try
-            {
-                comm2.Connection.Open();
-                OracleDataReader reader = comm2.ExecuteReader();
-                while (reader.Read())
-                {
-                    ListItem item = new ListItem(Convert.ToString(reader["NAME"]), Convert.ToString(reader["ingredientid"]));
-                    ingredientListModel.Add(item);
-                }
-                reader.Close();
-                reader.Dispose();
-            }
-            catch (Exception)
-            {
-            }
-            finally
-            {
-                comm2.Connection.Close();
-                comm2.Connection.Dispose();
             }
             submitList.DataSource = userListModel;
             submitList.DataBind();

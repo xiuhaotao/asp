@@ -18,49 +18,10 @@ public partial class RecipeDetails : ThemeClass
         if (!IsPostBack)
         {
             BindList();
-    //        BintIngredientList();
         }
 
     }
-  /*  private void BintIngredientList()
-    {
-        string connectionString =
-        ConfigurationManager.ConnectionStrings["ConnectionString2"].ConnectionString;
-        OracleConnection conn = new OracleConnection();
-        conn.ConnectionString = connectionString;
-        OracleCommand comm = conn.CreateCommand();
-        OracleDataReader reader;
-        DataTable table;
-        table = new DataTable();
-        try
-        {
-            comm.CommandText = "select * from ingredients join recipesLinkIngredients on ingredients.INGREDIENTID = recipesLinkIngredients.INGREDIENTID where recipesLinkIngredients .recipeid == " + Request.QueryString["key"];
-
-            comm.CommandType = CommandType.Text;
-
-            comm.Connection.Open();
-            reader = comm.ExecuteReader();
-            table.Load(reader);
-        }
-        catch (SqlException ex)
-        {
-            exception.Text = ex.Message;
-        }
-        catch (Exception ex)
-        {
-
-            exception.Text = ex.Message;
-        }
-
-        
-        finally
-        {
-            comm.Connection.Close();
-        }
-        GridView ingerList = (GridView)DetailsViewDetail.FindControl("IngredientsGridView");
-        ingerList.DataSource = table;
-        ingerList.DataBind();
-    }*/
+  
 
     private void BindList()
     {
@@ -99,11 +60,11 @@ public partial class RecipeDetails : ThemeClass
         table2 = new DataTable();
         try
         {
-            comm.CommandText = "select i.name, i.quantity, i.unitOfMeasure, r.categoryid, c.type from recipes r left join categories c on c.categoryid = r.categoryid right outer join recipesLinkIngredients on r.recipeid = recipesLinkIngredients.recipeid right outer join ingredients i on recipesLinkIngredients.ingredientID = i.ingredientID where r.recipeid=" + Request.QueryString["key"];
+            comm.CommandText = "select r.categoryid, c.type from recipes r left join categories c on c.categoryid = r.categoryid right outer join recipesLinkIngredients on r.recipeid = recipesLinkIngredients.recipeid right outer join ingredients i on recipesLinkIngredients.ingredientID = i.ingredientID where r.recipeid=" + Request.QueryString["key"];
             comm.CommandType = CommandType.Text;
             reader = comm.ExecuteReader();
             table2.Load(reader);
-            Label category = (Label)DetailsViewDetail.FindControl("Label5");
+            Label category = (Label)DetailsViewDetail.FindControl("catgoryLabel");
             if (category != null)
             {
                 category.Text = table2.Rows[0]["type"].ToString();
@@ -129,13 +90,7 @@ public partial class RecipeDetails : ThemeClass
             exception.Text = ex.Message;
         }
        
-     //   ingredientView.DataSource = table2;
-       // ingredientView.DataBind();
-
-
-
-
-
+ 
 
         DataTable table3;
         table3 = new DataTable();
@@ -261,12 +216,11 @@ public partial class RecipeDetails : ThemeClass
 
     protected void DetailsViewDetail_ItemUpdating(object sender, DetailsViewUpdateEventArgs e)
     {
-
         TextBox newRecipeName = (TextBox)DetailsViewDetail.FindControl("editRecipename");
         TextBox newDesc = (TextBox)DetailsViewDetail.FindControl("editDesc");
         TextBox newNum = (TextBox)DetailsViewDetail.FindControl("editNum");
         TextBox neweditMinute = (TextBox)DetailsViewDetail.FindControl("editMinute");
-        
+
         DropDownList newSeleCat = (DropDownList)DetailsViewDetail.FindControl("categoryList");
 
         string newReName = newRecipeName.Text;
@@ -300,17 +254,7 @@ public partial class RecipeDetails : ThemeClass
             comm.Connection.Close();
         }
         BindList();
-    }
 
-    protected void insertIngre_Click(object sender, EventArgs e)
-    {
-
-    }
-
-    protected void ingredientView_SelectedIndexChanged(object sender, EventArgs e)
-    {
-
-       
     }
 
     protected void ingredientView_RowEditing(object sender, GridViewEditEventArgs e)
@@ -343,8 +287,6 @@ public partial class RecipeDetails : ThemeClass
         {
             comm.Connection.Open();
             comm.CommandType = CommandType.Text;
-
-            comm.CommandType = CommandType.Text;
             comm.CommandText = "update ingredients set name ='" + name + "' , quantity=" + quan + ", unitofmeasure= '" + measure + "' where ingredientid = " + ingerID;
             comm.ExecuteNonQuery();
             ingredientView.EditIndex = -1;
@@ -368,7 +310,7 @@ public partial class RecipeDetails : ThemeClass
         BindList();
     }
 
-    protected void Button1_Click(object sender, EventArgs e)
+    protected void addButton_Click(object sender, EventArgs e)
     {
         DataTable table3;
         table3 = new DataTable();
@@ -410,5 +352,77 @@ public partial class RecipeDetails : ThemeClass
         {
             comm.Connection.Close();
         }
+    }
+
+    protected void DetailsViewDetail_ModeChanged(object sender, EventArgs e)
+    {
+       
+
+    }
+
+
+
+    protected void categoryList_DataBound(object sender, EventArgs e)
+    {
+        int a = 1;
+        /*
+        string connectionString =
+       ConfigurationManager.ConnectionStrings["ConnectionString2"].ConnectionString;
+        OracleConnection conn = new OracleConnection();
+        conn.ConnectionString = connectionString;
+        OracleCommand comm = conn.CreateCommand();
+        OracleDataReader reader;
+      
+        DataTable table2, listTable;
+        table2 = new DataTable();
+        listTable = new DataTable();
+        try
+        {
+            comm.Connection.Open();
+            comm.CommandText = "select r.categoryid, c.type from recipes r left join categories c on c.categoryid = r.categoryid where r.recipeid=" + Request.QueryString["key"];
+            comm.CommandType = CommandType.Text;
+            reader = comm.ExecuteReader();
+            table2.Load(reader);
+            comm.Parameters.Clear();
+            comm.CommandText = "select categoryid, type from categories";
+            comm.CommandType = CommandType.Text;
+            reader = comm.ExecuteReader();
+            listTable.Load(reader);
+            Label category = (Label)DetailsViewDetail.FindControl("catgoryLabel");
+            DropDownList categoryList1 = (DropDownList)DetailsViewDetail.FindControl("categoryList");
+            categoryList1.DataSource = listTable;
+            categoryList1.DataTextField = "Type";
+            categoryList1.DataValueField = "categoryid";
+            categoryList1.DataBind();
+            if (category != null)
+            {
+                category.Text = table2.Rows[0]["type"].ToString();
+            }           
+
+            if (categoryList1 != null)
+            {
+                ListItem selectedListItem = categoryList1.Items.FindByValue(table2.Rows[0]["categoryid"].ToString());
+                if (selectedListItem != null)
+                {
+                    selectedListItem.Selected = true;
+                }
+            }
+        }
+
+        catch (SqlException ex)
+        {
+            exception.Text = ex.Message;
+        }
+        catch (Exception ex)
+        {
+
+            exception.Text = ex.Message;
+        }
+
+        finally
+        {
+            comm.Connection.Close();
+        }
+        */
     }
 }

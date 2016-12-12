@@ -14,12 +14,20 @@ public partial class Setup : ThemeClass
     protected void btnBlue_Click(object sender, EventArgs e)
     {
         Session["Theme"] = btnDark.Text;
-        Server.Transfer(Request.FilePath);
+        HttpCookie themeCookie;
+        themeCookie = new HttpCookie("Theme", btnDark.Text);
+        themeCookie.Expires = DateTime.Now.AddMonths(1);
+        Response.Cookies.Add(themeCookie);
+        Response.Redirect(Request.FilePath);
     }
 
     protected void btnRed_Click(object sender, EventArgs e)
     {
         Session["Theme"] = btnLight.Text;
-        Server.Transfer(Request.FilePath);
+        HttpCookie themeCookie;
+        themeCookie = new HttpCookie("Theme", btnLight.Text);
+        themeCookie.Expires = DateTime.Now.AddMonths(1);
+        Response.Cookies.Add(themeCookie);
+        Response.Redirect(Request.FilePath);
     }
 }

@@ -5,11 +5,10 @@
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" Runat="Server">
     <div class="content"><h2>Recipes</h2></div>
     <div>
-        <asp:GridView ID="GridViewRecipe" runat="server" OnSelectedIndexChanged="GridViewRecipe_SelectedIndexChanged" CellPadding="4" ForeColor="#333333" GridLines="None">
+        <asp:GridView ID="GridViewRecipe" runat="server" OnSelectedIndexChanged="GridViewRecipe_SelectedIndexChanged" CellPadding="4" ForeColor="#333333" GridLines="None" Width="844px">
             <AlternatingRowStyle BackColor="White" />
             <Columns>
                 <asp:CommandField HeaderText="Detail" ShowHeader="True" ShowSelectButton="True" />
-                <asp:CommandField HeaderText="Update" ShowEditButton="True"  ShowHeader="True" />
             </Columns>
             <EditRowStyle BackColor="#7C6F57" />
             <FooterStyle BackColor="#1C5E55" Font-Bold="True" ForeColor="White" />

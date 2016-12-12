@@ -63,7 +63,7 @@ public partial class recipes : ThemeClass
     {
         int selectedIndex = GridViewRecipe.SelectedIndex;
         GridViewRow row = GridViewRecipe.Rows[selectedIndex];
-        string key = row.Cells[3].Text;
+        string key = row.Cells[2].Text;
         Response.Redirect("RecipeDetails.aspx?Key=" + key);
     }
 }

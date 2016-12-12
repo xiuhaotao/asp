@@ -11,12 +11,17 @@ public class ThemeClass : System.Web.UI.Page
 {
     protected void Page_PreInit(object sender, EventArgs e)
     {
-        if (Session["Theme"] != null)
+        HttpCookie themeCookie;
+        themeCookie = Request.Cookies["Theme"];
+        if (themeCookie != null)
         {
-            Page.Theme = Session["Theme"].ToString();
+            Page.Theme = themeCookie.Value;
         }
         else
         {
+            themeCookie = new HttpCookie("Theme", "Light");
+            themeCookie.Expires = DateTime.Now.AddMonths(1);
+            Response.Cookies.Add(themeCookie);
             Page.Theme = "Light";
         }
     }
