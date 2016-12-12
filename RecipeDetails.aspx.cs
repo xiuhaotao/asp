@@ -218,8 +218,6 @@ public partial class RecipeDetails : ThemeClass
         {
             comm.Connection.Open();
             comm.CommandType = CommandType.Text;
-
-            comm.CommandType = CommandType.Text;
             comm.CommandText = "update recipes set recipename='" + newReName + "' , description='" + newDes + "', servingnum=" + servingNum + ", cookingminutes=" + minute + ", categoryid='" + categ + "' where recipeid = " + Request.QueryString["key"];
             comm.ExecuteNonQuery();
         }
@@ -233,6 +231,7 @@ public partial class RecipeDetails : ThemeClass
         {
             comm.Connection.Close();
         }
+        DetailsViewDetail.ChangeMode(DetailsViewMode.ReadOnly);
         BindList();
 
     }
@@ -240,13 +239,11 @@ public partial class RecipeDetails : ThemeClass
     protected void ingredientView_RowEditing(object sender, GridViewEditEventArgs e)
     {
         ingredientView.EditIndex = e.NewEditIndex;
-
         BindList();
     }
 
     protected void ingredientView_RowUpdating(object sender, GridViewUpdateEventArgs e)
-    {
-       
+    {       
       GridViewRow row = ingredientView.Rows[e.RowIndex];
       Label Id = (Label)row.FindControl("ingerIdd");
         
@@ -303,8 +300,6 @@ public partial class RecipeDetails : ThemeClass
         try
         {
             comm.Connection.Open();
-            comm.CommandType = CommandType.Text;
-
             comm.CommandType = CommandType.Text;
             comm.CommandText = "insert into ingredients (ingredientid, name, quantity, unitofmeasure) values(ingredients_id_seq.nextval, '" + newIngedientName.Text + "', " + int.Parse(newQuantity.Text) + ", '" + newUnit.Text + "')";
             comm.ExecuteNonQuery();
