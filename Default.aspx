@@ -1,29 +1,14 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="Default.aspx.cs" Inherits="_Default" %>
-<html>
-<head>
-  <title>Forms Authentication - Default Page</title>
-</head>
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/MasterPage.master" AutoEventWireup="true" CodeFile="Default.aspx.cs" Inherits="home" %>
+<%--XiurongDeng 300853165 --%>
+<asp:Content ID="Content1" ContentPlaceHolderID="head" Runat="Server">
+    
+</asp:Content>
+<asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" Runat="Server">
+    <div class="content">
+        <h2>Home</h2>
+        <p><img style="float: left; margin: 0px 15px 15px 0px;" src="/img/51072.jpg" width="300" />
+        Hi, I am Xiu and welcome to my kitchen room. There is nothing would like sitting around with friends and families having great conversations over a delicious meal, add some wine or craft beer.
+        I love cooking and also like to sharing my receipeS ,tips,and ideas with family and friends.      <br style="clear: both;" /></p>
+    </div>
+</asp:Content>
 
-<script runat="server">
-  void Page_Load(object sender, EventArgs e)
-  {
-    Welcome.Text = "Hello, " + Context.User.Identity.Name;
-  }
-
-  void Signout_Click(object sender, EventArgs e)
-  {
-    FormsAuthentication.SignOut();
-    Response.Redirect("Logon.aspx");
-  }
-</script>
-
-<body>
-  <h3>
-    Using Forms Authentication</h3>
-  <asp:Label ID="Welcome" runat="server" />
-  <form id="Form1" runat="server">
-    <asp:Button ID="Submit1" OnClick="Signout_Click" 
-       Text="Sign Out" runat="server" /><p>
-  </form>
-</body>
-</html>

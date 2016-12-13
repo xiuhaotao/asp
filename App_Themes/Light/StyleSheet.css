@@ -1,4 +1,5 @@
-﻿body { 
+﻿/*%--XiurongDeng 300853165 --%*/
+body { 
     font-family:Verdana;
     
 }
@@ -6,6 +7,11 @@
     height: 329.407px;
     background-size: 1349px 329.407px;
     background-image: url('../../img/banner2.jpg');
+}
+.widelabel{
+    display:-moz-inline-box;
+    display:inline-block;
+    width:100px;
 }
 
 #footer{
