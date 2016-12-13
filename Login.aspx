@@ -12,6 +12,7 @@
     </p>
     <p>
         <asp:button id="submitButton" runat="server" text="Login" OnClick="submitButton_Click" />
+        <asp:button id="registerButton" runat="server" text="Register" OnClick="registerButton_Click" />
     </p>
     <p>
         <asp:Label ID="lblMessage" runat="server" Text=""></asp:Label>

@@ -20,7 +20,7 @@
             </div>
 
             <div id="menu2">
-                <asp:Button ID="Logout" runat="server" OnClick="Signout_Click" Text="Sign Out" />
+                <asp:Button ID="Logout" runat="server" OnClick="Signout_Click" Text="Sign Out" /><p />
                 <asp:SiteMapDataSource ID="project1SiteMap" runat="server"
                     ShowStartingNode="false" />
                 <asp:Menu ID="projectMenu" runat="server"

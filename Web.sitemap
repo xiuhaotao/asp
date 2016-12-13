@@ -7,8 +7,5 @@
         <siteMapNode url="~/recipes.aspx" title="Recipes"  description="Project.Recipes" />
         <siteMapNode url="~/addRecipes.aspx" title="AddRecipes"  description="Project.AddRecipes" />
         <siteMapNode url="~/Setup.aspx" title="Setup" description="Project.Setup"/>
-        <siteMapNode url="~/Registration.aspx" title="Registration" description="Project.Setup"/>
-
-
     </siteMapNode>
 </siteMap>

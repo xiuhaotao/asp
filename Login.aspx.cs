@@ -17,6 +17,11 @@ public partial class Login : ThemeClass
     {
     }
 
+    protected void registerButton_Click(object sender, EventArgs e)
+    {
+        Server.Transfer("Registration.aspx", false);
+    }
+
     protected void submitButton_Click(object sender, EventArgs e)
     {
         string Username = username.Text;
