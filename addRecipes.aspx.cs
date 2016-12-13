@@ -16,7 +16,8 @@ public partial class addRecipes : ThemeClass
     private List<Recipe> recipes;
     protected void Page_Load(object sender, EventArgs e)
     {
-
+        submittedByTextBox.Text = HttpContext.Current.User.Identity.Name;
+        submittedByTextBox.Enabled = false;
         recipe = new Recipe();
 
         if (null != Session["ingredients"])

@@ -15,7 +15,6 @@
     </p>
     <p>
         <asp:Label ID="lblMessage" runat="server" Text=""></asp:Label>
-        <asp:Label ID="lblPass" runat="server" Text="Label"></asp:Label>
     </p>
 </asp:Content>
 
